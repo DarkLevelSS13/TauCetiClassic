@@ -1,5 +1,5 @@
-#define TIMER_MIN 420
-#define TIMER_MAX 600
+#define TIMER_MIN 600
+#define TIMER_MAX 780
 
 var/bomb_set
 
@@ -15,7 +15,7 @@ var/bomb_set
 	var/extended = 0.0
 	var/lighthack = 0
 	var/opened = 0.0
-	var/timeleft = 600.0
+	var/timeleft = TIMER_MAX
 	var/timing = 0.0
 	var/r_code = "ADMIN"
 	var/code = ""
@@ -45,7 +45,7 @@ var/bomb_set
 	if (timing > 0) // because explode() sets it to -1, which is TRUE.
 		bomb_set = 1 //So long as there is one nuke timing, it means one nuke is armed.
 		timeleft = max(timeleft - 2, 0) // 2 seconds per process()
-		playsound(loc, 'sound/items/timer.ogg', 30, 0)
+		playsound(src, 'sound/items/timer.ogg', VOL_EFFECTS_MASTER, 30, FALSE)
 		if (timeleft <= 0)
 			explode()
 		updateUsrDialog()
@@ -415,7 +415,7 @@ var/bomb_set
 	src.safety = 1
 	if(!src.lighthack)
 		src.icon_state = "nuclearbomb3"
-	playsound(src,'sound/machines/Alarm.ogg',100,0,5)
+	playsound(src, 'sound/machines/Alarm.ogg', VOL_EFFECTS_MASTER, null, FALSE, 5)
 	if (ticker && ticker.mode)
 		ticker.mode.explosion_in_progress = 1
 	sleep(100)
