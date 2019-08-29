@@ -239,7 +239,7 @@
 				feedback_inc("arcade_win_emagged")
 				new /obj/effect/spawner/newbomb/timer/syndicate(src.loc)
 				new /obj/item/clothing/head/collectable/petehat(src.loc)
-				message_admins("[key_name_admin(usr)] has outbombed Cuban Pete and been awarded a bomb. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
+				message_admins("[key_name_admin(usr)] has outbombed Cuban Pete and been awarded a bomb. [ADMIN_JMP(usr)]")
 				log_game("[key_name_admin(usr)] has outbombed Cuban Pete and been awarded a bomb.")
 				src.New()
 				emagged = 0
@@ -308,27 +308,20 @@
 	src.blocked = 0
 	return
 
-
-/obj/machinery/computer/arcade/attackby(I, user)
-	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
-		temp = "If you die in the game, you die for real!"
-		player_hp = 30
-		player_mp = 10
-		enemy_hp = 45
-		enemy_mp = 20
-		gameover = 0
-		blocked = 0
-
-		emagged = 1
-
-		enemy_name = "Cuban Pete"
-		name = "Outbomb Cuban Pete"
-
-
-		src.updateUsrDialog()
-	else
-		..()
-	return
+/obj/machinery/computer/arcade/emag_act(mob/user)
+	if(emagged)
+		return FALSE
+	temp = "If you die in the game, you die for real!"
+	player_hp = 30
+	player_mp = 10
+	enemy_hp = 45
+	enemy_mp = 20
+	gameover = 0
+	blocked = 0
+	emagged = 1
+	enemy_name = "Cuban Pete"
+	name = "Outbomb Cuban Pete"
+	src.updateUsrDialog()
 
 /obj/machinery/computer/arcade/emp_act(severity)
 	if(stat & (NOPOWER|BROKEN))

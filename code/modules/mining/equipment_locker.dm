@@ -452,7 +452,7 @@
 		var/list/L = list()
 		for(var/obj/item/device/radio/beacon/B in radio_beacon_list)
 			var/turf/T = get_turf(B)
-			if(T.z == ZLEVEL_STATION)
+			if(is_station_level(T.z))
 				L += B
 		if(!L.len)
 			to_chat(user, "<span class='notice'>The [src.name] failed to create a wormhole.</span>")
@@ -491,12 +491,9 @@
 				var/mob/living/L = M
 				L.Weaken(3)
 				shake_camera(L, 20, 1)
-				spawn(20)
-					if(L)
-						var/turf/T = get_turf(L)
-						T.add_vomit_floor(L)
-						L.nutrition -= 20
-						L.adjustToxLoss(-3)
+				if(ishuman(L))
+					var/mob/living/carbon/human/H = L
+					H.invoke_vomit_async()
 
 
 /**********************Resonator**********************/
@@ -621,7 +618,7 @@
 	melee_damage_upper = 15
 	environment_smash = 0
 	attacktext = "drills"
-	attack_sound = 'sound/weapons/circsawhit.ogg'
+	attack_sound = list('sound/weapons/circsawhit.ogg')
 	ranged = 1
 	ranged_message = "shoots"
 	ranged_cooldown_cap = 3
@@ -643,15 +640,17 @@
 	if(iswelder(I))
 		var/obj/item/weapon/weldingtool/W = I
 		user.SetNextMove(CLICK_CD_INTERACT)
-		if(W.welding && !stat)
+		if(W.use(0, user) && !stat)
 			if(stance != HOSTILE_STANCE_IDLE)
 				to_chat(user, "<span class='info'>[src] is moving around too much to repair!</span>")
 				return
 			if(maxHealth == health)
 				to_chat(user, "<span class='info'>[src] is at full integrity.</span>")
 			else
-				health += 10
-				to_chat(user, "<span class='info'>You repair some of the armor on [src].</span>")
+				to_chat(user, "<span class='info'>You start repair some of the armor on [src].</span>")
+				if(W.use_tool(src, user, 20, volume = 50))
+					health += 10
+					to_chat(user, "<span class='info'>You repaired some of the armor on [src].</span>")
 			return
 	..()
 

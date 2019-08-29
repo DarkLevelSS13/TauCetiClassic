@@ -110,7 +110,6 @@
 	name = "fire axe"
 	desc = "Truly, the weapon of a madman. Who would think to fight fire with an axe?"
 	force = 5
-	hitsound = "desceration"
 	sharp = 1
 	edge = 1
 	w_class = ITEM_SIZE_LARGE
@@ -118,6 +117,10 @@
 	force_unwielded = 10
 	force_wielded = 40
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
+
+/obj/item/weapon/twohanded/fireaxe/atom_init()
+	. = ..()
+	hitsound = SOUNDIN_DESCERATION
 
 /obj/item/weapon/twohanded/fireaxe/update_icon()  //Currently only here to fuck with the on-mob icons.
 	icon_state = "fireaxe[wielded]"
@@ -268,7 +271,7 @@
 
 /obj/item/weapon/twohanded/dualsaber/wield()
 	set_light(2)
-	hitsound = 'sound/weapons/blade1.ogg'
+	hitsound = list('sound/weapons/blade1.ogg')
 	w_class = ITEM_SIZE_HUGE
 	return ..()
 

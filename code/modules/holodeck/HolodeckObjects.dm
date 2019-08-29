@@ -141,7 +141,7 @@
 	return
 
 /obj/structure/window/reinforced/holowindow/shatter(display_message = 1)
-	playsound(src, "shatter", VOL_EFFECTS_MASTER)
+	playsound(src, pick(SOUNDIN_SHATTER), VOL_EFFECTS_MASTER)
 	if(display_message)
 		visible_message("[src] fades away as it shatters!")
 	qdel(src)
@@ -158,7 +158,7 @@
 		var/aforce = I.force
 		playsound(src, 'sound/effects/Glasshit.ogg', VOL_EFFECTS_MASTER)
 
-		visible_message("\red <B>[src] was hit by [I].</B>")
+		visible_message("<span class='warning'><B>[src] was hit by [I].</B></span>")
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			take_damage(aforce)
 		return
@@ -180,7 +180,7 @@
 
 /obj/machinery/door/window/holowindoor/shatter(display_message = 1)
 	src.density = 0
-	playsound(src, "shatter", VOL_EFFECTS_MASTER)
+	playsound(src, pick(SOUNDIN_SHATTER), VOL_EFFECTS_MASTER)
 	if(display_message)
 		visible_message("[src] fades away as it shatters!")
 	qdel(src)
@@ -311,10 +311,10 @@
 	icon = 'icons/obj/monitors.dmi'
 	icon_state = "auth_off"
 	anchored = 1.0
-	use_power = 1
+	use_power = IDLE_POWER_USE
 	idle_power_usage = 2
 	active_power_usage = 6
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	var/ready = 0
 	var/area/currentarea = null
 	var/eventstarted = 0

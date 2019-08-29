@@ -188,7 +188,7 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		H.ventcrawler = 1
-		to_chat(H, "\blue \b Ventcrawling allowed")
+		to_chat(H, "<span class='notice'><b>Ventcrawling allowed</b></span>")
 
 	var/matrix/Mx = matrix()
 	Mx.Scale(0.8) //Makes our hulk to be bigger than any normal human.
@@ -240,7 +240,7 @@
 		M.mind.hulkizing = 0   //We don't want to waste user's try, so user can mutate once later.
 		return
 
-	message_admins("[M.name] ([M.ckey]) is a <span class='warning'>Monster</span> (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
+	message_admins("[M.name] ([M.ckey]) is a <span class='warning'>Monster</span> [ADMIN_JMP(M)]")
 	if(istype(M.loc, /obj/machinery/dna_scannernew))
 		var/obj/machinery/dna_scannernew/DSN = M.loc
 		DSN.occupant = null

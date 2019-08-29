@@ -37,7 +37,7 @@
 	if(stage > 1 && !active && clown_check(user))
 		to_chat(user, "<span class='warning'>You prime \the [name]!</span>")
 
-		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src].", user)
 
 		activate()
 		add_fingerprint(user)
@@ -71,7 +71,7 @@
 				to_chat(user, "<span class='notice'>You lock the assembly.</span>")
 				name = "grenade"
 			else
-//					user << "\red You need to add at least one beaker before locking the assembly."
+//					user << "<span class='warning'>You need to add at least one beaker before locking the assembly.</span>"
 				to_chat(user, "<span class='notice'>You lock the empty assembly.</span>")
 				name = "fake grenade"
 			playsound(src, 'sound/items/Screwdriver.ogg', VOL_EFFECTS_MASTER)
@@ -124,7 +124,7 @@
 		icon_state = initial(icon_state) + "_active"
 
 		if(user)
-			msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+			msg_admin_attack("[user.name] ([user.ckey]) primed \a [src]", user)
 
 	return
 

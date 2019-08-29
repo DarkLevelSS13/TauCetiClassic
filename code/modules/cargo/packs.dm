@@ -102,8 +102,10 @@ var/list/all_supply_groups = list("Operations","Security","Hospitality","Enginee
 					/obj/item/weapon/grenade/smokebomb,
 					/obj/item/weapon/grenade/smokebomb,
 					/obj/item/weapon/grenade/smokebomb,
-					/obj/item/weapon/pen/paralysis)
-	cost = 1750
+					/obj/item/weapon/storage/box/syndie_kit/chameleon,
+					/obj/item/weapon/storage/toolbox/syndicate,
+					/obj/item/weapon/storage/box/syndie_kit/posters)
+	cost = 10000
 	crate_name = "Special Ops crate"
 	group = "Security"
 	hidden = TRUE
@@ -479,6 +481,14 @@ var/list/all_supply_groups = list("Operations","Security","Hospitality","Enginee
 	cost = 700
 	crate_type = /obj/structure/closet/crate/freezer
 	crate_name = "Vendomat supply crate"
+	group = "Hospitality"
+
+/datum/supply_pack/kvasstank
+	name = "Kvass tank crate"
+	contains = list(/obj/structure/reagent_dispensers/kvasstank)
+	cost = 1200
+	crate_type = /obj/structure/largecrate
+	crate_name = "Kvass tank crate"
 	group = "Hospitality"
 
 /datum/supply_pack/vending_dinnerware

@@ -1,5 +1,5 @@
 #define LOG_CLEANING(text) \
-  replace_characters(text, list("\proper"="","\improper"="", JA_CODE=JA_PLACEHOLDER, JA_CODE_ASCII=JA_PLACEHOLDER, JA_CHARACTER=JA_PLACEHOLDER))
+  replace_characters(text, list("\proper"="","\improper"="", JA_ENTITY=JA_PLACEHOLDER, JA_ENTITY_ASCII=JA_PLACEHOLDER, JA_CHARACTER=JA_PLACEHOLDER))
 
 //print an error message to world.log
 
@@ -221,6 +221,7 @@
 	stats["duration"] = roundduration2text()
 	stats["mode"] = ticker.mode
 	stats["mode_result"] = ticker.mode.mode_result
+	stats["map"] = SSmapping.config.map_name
 
 	stats["completion_html"] = ticker.mode.completion_text
 	stats["completion_antagonists"] = antagonists_completion//todo: icon2base64 icons?

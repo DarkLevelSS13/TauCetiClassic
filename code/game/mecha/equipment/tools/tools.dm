@@ -76,12 +76,12 @@
 			M.take_overall_damage(dam_force)
 			M.adjustOxyLoss(round(dam_force/2))
 			M.updatehealth()
-			occupant_message("\red You squeeze [target] with [src.name]. Something cracks.")
-			chassis.visible_message("\red [chassis] squeezes [target].")
+			occupant_message("<span class='warning'>You squeeze [target] with [src.name]. Something cracks.</span>")
+			chassis.visible_message("<span class='warning'>[chassis] squeezes [target].</span>")
 
 			chassis.occupant.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [name]</font>"
 			M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [chassis.occupant.name] ([chassis.occupant.ckey]) with [name]</font>"
-			msg_admin_attack("[key_name(chassis.occupant)] attacked [key_name(M)] with [name]")
+			msg_admin_attack("[key_name(chassis.occupant)] attacked [key_name(M)] with [name]", chassis.occupant)
 		else
 			step_away(M,chassis)
 			occupant_message("You push [target] out of the way.")
@@ -144,7 +144,7 @@
 					var/mob/living/M = target
 					chassis.occupant.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [name]</font>"
 					M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [chassis.occupant.name] ([chassis.occupant.ckey]) with [name]</font>"
-					msg_admin_attack("[key_name(chassis.occupant)] attacked [key_name(M)] with [name]")
+					msg_admin_attack("[key_name(chassis.occupant)] attacked [key_name(M)] with [name]", chassis.occupant)
 
 				log_message("Drilled through [target]")
 				target.ex_act(2)
@@ -209,8 +209,7 @@
 					var/mob/living/M = target
 					chassis.occupant.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [name]</font>"
 					M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [chassis.occupant.name] ([chassis.occupant.ckey]) with [name]</font>"
-					msg_admin_attack("[key_name(chassis.occupant)] attacked [key_name(M)] with [name]")
-
+					msg_admin_attack("[key_name(chassis.occupant)] attacked [key_name(M)] with [name]", chassis.occupant)
 				log_message("Drilled through [target]")
 				target.ex_act(2)
 	return 1
@@ -245,7 +244,7 @@
 		if(istype(target, /obj/structure/reagent_dispensers/watertank) && get_dist(chassis,target) <= 1)
 			var/obj/o = target
 			o.reagents.trans_to(src, 200)
-			occupant_message("\blue Extinguisher refilled")
+			occupant_message("<span class='notice'>Extinguisher refilled</span>")
 			playsound(chassis, 'sound/effects/refill.ogg', VOL_EFFECTS_MASTER, null, null, -6)
 		else
 			if(src.reagents.total_volume > 0)
@@ -414,7 +413,8 @@
 	range = RANGED
 
 /obj/item/mecha_parts/mecha_equipment/teleporter/action(atom/target)
-	if(!action_checks(target) || src.loc.z == ZLEVEL_CENTCOMM) return
+	if(!action_checks(target) || is_centcom_level(loc.z))
+		return
 	var/turf/T = get_turf(target)
 	if(T)
 		set_ready_state(0)
@@ -435,7 +435,8 @@
 	range = RANGED
 
 /obj/item/mecha_parts/mecha_equipment/wormhole_generator/action(atom/target)
-	if(!action_checks(target) || src.loc.z == ZLEVEL_CENTCOMM) return
+	if(!action_checks(target) || is_centcom_level(loc.z))
+		return
 	var/list/theareas = list()
 	for(var/area/AR in orange(100, chassis))
 		if(AR in theareas) continue
@@ -589,7 +590,7 @@
 		return chassis.dynattackby(W,user)
 	chassis.log_message("Attacked by [W]. Attacker - [user]")
 	if(prob(chassis.deflect_chance*deflect_coeff))
-		to_chat(user, "\red The [W] bounces off [chassis] armor.")
+		to_chat(user, "<span class='warning'>The [W] bounces off [chassis] armor.</span>")
 		chassis.log_append_to_last("Armor saved.")
 	else
 		chassis.occupant_message("<font color='red'><b>[user] hits [chassis] with [W].</b></font>")
@@ -641,7 +642,7 @@
 	if(!action_checks(src))
 		return chassis.dynbulletdamage(Proj)
 	if(prob(chassis.deflect_chance*deflect_coeff))
-		chassis.occupant_message("\blue The armor deflects incoming projectile.")
+		chassis.occupant_message("<span class='notice'>The armor deflects incoming projectile.</span>")
 		chassis.visible_message("The [chassis.name] armor deflects the projectile")
 		chassis.log_append_to_last("Armor saved.")
 	else
@@ -657,7 +658,7 @@
 	if(!action_checks(A))
 		return chassis.dynhitby(A)
 	if(prob(chassis.deflect_chance*deflect_coeff) || istype(A, /mob/living) || istype(A, /obj/item/mecha_parts/mecha_tracking))
-		chassis.occupant_message("\blue The [A] bounces off the armor.")
+		chassis.occupant_message("<span class='notice'>The [A] bounces off the armor.</span>")
 		chassis.visible_message("The [A] bounces off the [chassis] armor")
 		chassis.log_append_to_last("Armor saved.")
 		if(istype(A, /mob/living))
@@ -770,7 +771,7 @@
 	range = 0
 	var/datum/global_iterator/pr_energy_relay
 	var/coeff = 100
-	var/list/use_channels = list(EQUIP,ENVIRON,LIGHT)
+	var/list/use_channels = list(STATIC_EQUIP,STATIC_ENVIRON,STATIC_LIGHT)
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/atom_init()
 	. = ..()
@@ -847,7 +848,7 @@
 		var/area/A = get_area(ER.chassis)
 		if(A)
 			var/pow_chan
-			for(var/c in list(EQUIP,ENVIRON,LIGHT))
+			for(var/c in list(STATIC_EQUIP,STATIC_ENVIRON,STATIC_LIGHT))
 				if(A.powered(c))
 					pow_chan = c
 					break
@@ -1078,11 +1079,11 @@
 		var/mob/living/M = target
 		if(M.stat>1) return
 		if(chassis.occupant.a_intent == "hurt")
-			chassis.occupant_message("\red You obliterate [target] with [src.name], leaving blood and guts everywhere.")
-			chassis.visible_message("\red [chassis] destroys [target] in an unholy fury.")
+			chassis.occupant_message("<span class='warning'>You obliterate [target] with [src.name], leaving blood and guts everywhere.</span>")
+			chassis.visible_message("<span class='warning'>[chassis] destroys [target] in an unholy fury.</span>")
 		if(chassis.occupant.a_intent == "disarm")
-			chassis.occupant_message("\red You tear [target]'s limbs off with [src.name].")
-			chassis.visible_message("\red [chassis] rips [target]'s arms off.")
+			chassis.occupant_message("<span class='warning'>You tear [target]'s limbs off with [src.name].</span>")
+			chassis.visible_message("<span class='warning'>[chassis] rips [target]'s arms off.</span>")
 		else
 			step_away(M,chassis)
 			chassis.occupant_message("You smash into [target], sending them flying.")

@@ -48,9 +48,9 @@
 
 /obj/item/stack/proc/update_weight()
 	if(amount <= (max_amount * (1 / 3)))
-		w_class = Clamp(full_w_class - 2, ITEM_SIZE_TINY, full_w_class)
+		w_class = CLAMP(full_w_class - 2, ITEM_SIZE_TINY, full_w_class)
 	else if (amount <= (max_amount * (2 / 3)))
-		w_class = Clamp(full_w_class - 1, ITEM_SIZE_TINY, full_w_class)
+		w_class = CLAMP(full_w_class - 1, ITEM_SIZE_TINY, full_w_class)
 	else
 		w_class = full_w_class
 
@@ -156,12 +156,12 @@
 		if (!multiplier) multiplier = 1
 		if(src.amount < (R.req_amount*multiplier))
 			if (R.req_amount*multiplier>1)
-				to_chat(usr, "\red You haven't got enough [src] to build \the [R.req_amount*multiplier] [R.title]\s!")
+				to_chat(usr, "<span class='warning'>You haven't got enough [src] to build \the [R.req_amount*multiplier] [R.title]\s!</span>")
 			else
-				to_chat(usr, "\red You haven't got enough [src] to build \the [R.title]!")
+				to_chat(usr, "<span class='warning'>You haven't got enough [src] to build \the [R.title]!</span>")
 			return
 		if (R.one_per_turf && (locate(R.result_type) in usr.loc))
-			to_chat(usr, "\red There is another [R.title] here!")
+			to_chat(usr, "<span class='warning'>There is another [R.title] here!</span>")
 			return
 		if (R.on_floor)
 			usr.client.cob.turn_on_build_overlay(usr.client, R, src)
@@ -170,7 +170,7 @@
 		if (R.time)
 			if(usr.is_busy())
 				return
-			to_chat(usr, "\blue Building [R.title] ...")
+			to_chat(usr, "<span class='notice'>Building [R.title] ...</span>")
 			if (!do_after(usr, R.time, target = usr))
 				return
 		if(!src.use(R.req_amount*multiplier))

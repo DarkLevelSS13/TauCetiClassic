@@ -174,19 +174,6 @@
 	if(user.is_busy())
 		return
 
-	if (istype(O, /obj/item/weapon/card/emag))
-		if (emagged)
-			to_chat(user, "<span class='warning'>[src] is already cracked.</span>")
-			return
-		else
-			add_fingerprint(user)
-			emagged = TRUE
-			flick("dryer-broken",src)
-			playsound(src, 'sound/effects/sparks3.ogg', VOL_EFFECTS_MASTER)
-			icon_state = "dryer-emag"
-			to_chat(user, "<span class='warning'>You swipe near [O] and crack it to be hot.</span>")
-			return
-
 	if((istype(O, /obj/item/weapon/grab)) && !emagged)
 		var/obj/item/weapon/grab/G = O
 		if(isliving(G.affecting))
@@ -280,6 +267,18 @@
 	else
 		busy = FALSE
 
+/obj/structure/dryer/emag_act(mob/user)
+	if(emagged)
+		to_chat(user, "<span class='warning'>[src] is already cracked.</span>")
+		return FALSE
+	add_fingerprint(user)
+	emagged = TRUE
+	flick("dryer-broken",src)
+	playsound(src, 'sound/effects/sparks3.ogg', VOL_EFFECTS_MASTER)
+	icon_state = "dryer-emag"
+	to_chat(user, "<span class='warning'>You swipe near card and crack it to be hot.</span>")
+	return TRUE
+
 /obj/machinery/shower
 	name = "shower"
 	desc = "The HS-451. Installed in the 2550s by the Nanotrasen Hygiene Division."
@@ -287,7 +286,7 @@
 	icon_state = "shower"
 	density = 0
 	anchored = 1
-	use_power = 0
+	use_power = NO_POWER_USE
 	var/on = 0
 	var/obj/effect/mist/mymist = null
 	var/ismist = 0				//needs a var so we can make it linger~
@@ -498,7 +497,7 @@
 				var/obj/item/organ/external/l_foot = H.bodyparts_by_name[BP_L_LEG]
 				var/obj/item/organ/external/r_foot = H.bodyparts_by_name[BP_R_LEG]
 				var/no_legs = FALSE
-				if((!l_foot || (l_foot && (l_foot.status & ORGAN_DESTROYED))) && (!r_foot || (r_foot && (r_foot.status & ORGAN_DESTROYED))))
+				if((!l_foot || (l_foot && (l_foot.is_stump))) && (!r_foot || (r_foot && (r_foot.is_stump))))
 					no_legs = TRUE
 				if(!no_legs)
 					H.feet_blood_DNA = null

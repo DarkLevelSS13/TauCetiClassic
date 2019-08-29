@@ -75,7 +75,7 @@
 	target = null
 	if(linked_console)
 		linked_console.active_wormhole = null
-		linked_console.use_power = 1
+		linked_console.set_power_use(IDLE_POWER_USE)
 		linked_console = null
 	if(linked_portal)
 		playsound(src, 'sound/effects/phasein.ogg', VOL_EFFECTS_MASTER, 25)
@@ -109,6 +109,6 @@
 			to_chat(H, "<span class='warning'>[msg]</span>")
 		if(prob(20))
 			bad_effects += 1
-			H.vomit() //No msg required, since vomit() will handle this.
+			H.invoke_vomit_async() //No msg required, since vomit() will handle this.
 		if(bad_effects == 2)
 			H.Paralyse(3)

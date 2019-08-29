@@ -15,6 +15,7 @@
 	origin_tech = "combat=1"
 	attack_verb = list("struck", "hit", "bashed")
 	action_button_name = "Switch Gun"
+	can_be_holstered = TRUE
 	var/obj/item/ammo_casing/chambered = null
 	var/fire_sound = 'sound/weapons/guns/Gunshot.ogg'
 	var/silenced = 0
@@ -80,6 +81,22 @@
 		PreFire(A,user,params) //They're using the new gun system, locate what they're aiming at.
 	else
 		Fire(A,user,params) //Otherwise, fire normally.
+
+/mob/living/carbon/AltClickOn(atom/A)
+	var/obj/item/I = get_active_hand()
+	if(istype(I, /obj/item/weapon/gun))
+		var/obj/item/weapon/gun/G = I
+		if(src.client.gun_mode)
+			G.Fire(A, src)
+		else
+			if(isliving(A))
+				var/mob/living/M = A
+				if(M in G.target)
+					M.NotTargeted(G)
+				else
+					G.PreFire(M, src)
+				return
+	..()
 
 /obj/item/weapon/gun/proc/Fire(atom/target, mob/living/user, params, reflex = 0, point_blank = FALSE)//TODO: go over this
 	//Exclude lasertag guns from the CLUMSY check.
@@ -161,9 +178,6 @@
 		src.visible_message("*click click*")
 		playsound(src, 'sound/weapons/guns/empty.ogg', VOL_EFFECTS_MASTER)
 
-/obj/item/weapon/gun/proc/isHandgun()
-	return 1
-
 /obj/item/weapon/gun/attack(mob/living/M, mob/living/user, def_zone)
 	//Suicide handling.
 	if (M == user && def_zone == O_MOUTH)
@@ -185,7 +199,7 @@
 				playsound(user, fire_sound, VOL_EFFECTS_MASTER, 10)
 			else
 				playsound(user, fire_sound, VOL_EFFECTS_MASTER)
-			if(istype(chambered.BB, /obj/item/projectile/beam/lastertag) || istype(chambered.BB, /obj/item/projectile/beam/practice))
+			if(istype(chambered.BB, /obj/item/projectile/beam/lasertag) || istype(chambered.BB, /obj/item/projectile/beam/practice))
 				user.visible_message("<span class = 'notice'>Nothing happens.</span>",\
 									"<span class = 'notice'>You feel rather silly, trying to commit suicide with a toy.</span>")
 				return

@@ -1,12 +1,12 @@
 var/global/list/scarySounds = list(
 	'sound/weapons/thudswoosh.ogg',
     'sound/weapons/guns/gunpulse_Taser.ogg', 'sound/weapons/armbomb.ogg',
-    'sound/voice/hiss1.ogg', 'sound/voice/hiss2.ogg',
-    'sound/voice/hiss3.ogg', 'sound/voice/hiss4.ogg',
-    'sound/voice/hiss5.ogg', 'sound/voice/hiss6.ogg',
+    'sound/voice/xenomorph/hiss_1.ogg', 'sound/voice/xenomorph/hiss_2.ogg',
+    'sound/voice/xenomorph/hiss_3.ogg',
+    'sound/voice/xenomorph/growl_1.ogg', 'sound/voice/xenomorph/growl_2.ogg',
     'sound/effects/Glassbr1.ogg', 'sound/effects/Glassbr2.ogg',
     'sound/effects/Glassbr3.ogg', 'sound/items/Welder.ogg',
-    'sound/items/Welder2.ogg','sound/machines/airlock/airlockToggle.ogg',
+    'sound/items/Welder2.ogg','sound/machines/airlock/toggle.ogg',
     'sound/effects/clownstep1.ogg', 'sound/effects/clownstep2.ogg'
 	)
 
@@ -26,23 +26,23 @@ var/list/RESTRICTED_CAMERA_NETWORKS = list( //Those networks can only be accesse
 var/list/roles_ingame_minute_unlock = list(
 	ROLE_PAI = 0,
 	ROLE_PLANT = 0,
-	ROLE_TRAITOR = 480,
-	ROLE_OPERATIVE = 480,
-	ROLE_CHANGELING = 480,
-	ROLE_RAIDER = 480,
-	ROLE_ALIEN = 480,
-	ROLE_WIZARD = 960,
-	ROLE_ERT = 960,
-	ROLE_REV = 960,
-	ROLE_MEME = 960,
-	ROLE_DRONE = 960,
-	ROLE_CULTIST = 960,
-	ROLE_BLOB = 960,
-	ROLE_NINJA = 1200,
-	ROLE_MALF = 1200,
-	ROLE_MUTINEER = 1200,
-	ROLE_SHADOWLING = 1200,
-	ROLE_ABDUCTOR = 1200
+	ROLE_TRAITOR = 720,
+	ROLE_OPERATIVE = 2160,
+	ROLE_CHANGELING = 2160,
+	ROLE_RAIDER = 4320,
+	ROLE_ALIEN = 1440,
+	ROLE_WIZARD = 2880,
+	ROLE_ERT = 1440,
+	ROLE_REV = 1440,
+	ROLE_MEME = 4320,
+	ROLE_DRONE = 1440,
+	ROLE_CULTIST = 3600,
+	ROLE_BLOB = 2880,
+	ROLE_NINJA = 4320,
+	ROLE_MALF = 3600,
+	ROLE_MUTINEER = 1440,
+	ROLE_SHADOWLING = 4320,
+	ROLE_ABDUCTOR = 2880
 )
 
 var/global/list/datum_alarm_list = list()

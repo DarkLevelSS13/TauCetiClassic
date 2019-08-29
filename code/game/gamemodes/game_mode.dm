@@ -25,13 +25,13 @@
 	var/mode_result = "undefined"
 	var/list/datum/mind/modePlayer = new
 	var/list/restricted_jobs = list()	// Jobs it doesn't make sense to be.  I.E chaplain or AI cultist
-	var/list/protected_jobs = list()	// Jobs that can't be traitors because
+	var/list/protected_jobs = list("Velocity Officer", "Velocity Chief", "Velocity Medical Doctor")	// Jobs that can't be traitors because
 	var/required_players = 0
 	var/required_players_secret = 0 //Minimum number of players for that game mode to be chose in Secret
 	var/required_enemies = 0
 	var/recommended_enemies = 0
 	var/list/datum/mind/antag_candidates = list()	// List of possible starting antags goes here
-	var/list/restricted_jobs_autotraitor = list("Cyborg", "Security Officer", "Warden")
+	var/list/restricted_jobs_autotraitor = list("Cyborg", "Security Officer", "Warden", "Velocity Officer", "Velocity Chief", "Velocity Medical Doctor")
 	var/autotraitor_delay = 15 MINUTES // how often to try to add new traitors.
 	var/role_type = null
 	var/newscaster_announcements = null
@@ -267,10 +267,10 @@ Implants;
 				var/extra = 8
 				suplink.uses += extra
 				if(man.mind) man.mind.total_TC += extra
-				to_chat(man, "\red We have received notice that enemy intelligence suspects you to be linked with us. We have thus invested significant resources to increase your uplink's capacity.")
+				to_chat(man, "<span class='warning'>We have received notice that enemy intelligence suspects you to be linked with us. We have thus invested significant resources to increase your uplink's capacity.</span>")
 			else
 				// Give them a warning!
-				to_chat(man, "\red They are on to you!")
+				to_chat(man, "<span class='warning'>They are on to you!</span>")
 
 		// Some poor people who were just in the wrong place at the wrong time..
 		else if(prob(10))
@@ -379,7 +379,7 @@ Implants;
 //Reports player logouts//
 //////////////////////////
 /proc/display_roundstart_logout_report()
-	var/msg = "\blue <b>Roundstart logout report</b>\n\n"
+	var/msg = "<span class='notice'><b>Roundstart logout report</b>\n\n</span>"
 	for(var/mob/living/L in living_list)
 
 		if(L.ckey)

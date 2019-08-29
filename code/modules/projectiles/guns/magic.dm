@@ -6,6 +6,7 @@
 	item_state = "staff"
 	fire_sound = 'sound/weapons/guns/gunpulse_emitter.ogg'
 	flags =  CONDUCT
+	slot_flags = SLOT_FLAGS_BACK
 	w_class = ITEM_SIZE_LARGE
 	var/max_charges = 3
 	var/charges = 0
@@ -15,8 +16,10 @@
 	var/ammo_type = /obj/item/ammo_casing/magic
 	var/global_access = FALSE
 	origin_tech = null
+	action_button_name = null
 	clumsy_check = 0
 	can_suicide_with = FALSE
+	can_be_holstered = FALSE
 
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi' //not really a gun and some toys use these inhands
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'

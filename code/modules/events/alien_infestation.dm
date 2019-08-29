@@ -23,7 +23,7 @@
 	for(var/obj/machinery/atmospherics/components/unary/vent_pump/temp_vent in machines)
 		if(QDELETED(temp_vent))
 			continue
-		if(temp_vent.loc.z == ZLEVEL_STATION && !temp_vent.welded)
+		if(is_station_level(temp_vent.loc.z) && !temp_vent.welded)
 			var/datum/pipeline/temp_vent_parent = temp_vent.PARENT1
 			//Stops Aliens getting stuck in small networks.
 			//See: Security, Virology
@@ -34,7 +34,7 @@
 		message_admins("An event attempted to spawn an alien but no suitable vents were found. Shutting down.")
 		return
 
-	var/list/candidates = get_alien_candidates()
+	var/list/candidates = get_larva_candidates()
 
 	while(spawncount > 0 && candidates.len)
 		var/obj/vent = pick(vents)
