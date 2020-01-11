@@ -1,8 +1,6 @@
-#define SOLID 1
-#define LIQUID 2
-#define GAS 3
 #define MAX_PILL_SPRITE 24
 #define MAX_BOTTLE_SPRITE 3
+
 /obj/machinery/chem_dispenser
 	name = "chem dispenser"
 	density = 1
@@ -155,6 +153,9 @@
 /obj/machinery/chem_dispenser/attackby(obj/item/weapon/reagent_containers/B, mob/user)
 //	if(isrobot(user))
 //		return
+
+	if(default_unfasten_wrench(user, B))
+		return
 
 	if(src.beaker)
 		to_chat(user, "Something is already loaded into the machine.")
